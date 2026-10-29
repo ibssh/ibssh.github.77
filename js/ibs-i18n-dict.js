@@ -1,0 +1,201 @@
+(function(){
+  // Static i18n dictionary for existing site content only (no realtime translation)
+  // Format: key -> { zh, en }
+  window.IBS_I18N_DICT = {
+    "common.nav.achievements": { zh: "卓越成就", en: "Achievements" },
+    "common.nav.starProject": { zh: "明星工程", en: "Featured Project" },
+    "common.nav.future": { zh: "展望未来", en: "Looking Ahead" },
+
+    "common.lang.zhFull": { zh: "中文", en: "中文" },
+    "common.lang.zhShort": { zh: "中", en: "中" },
+    "common.lang.en": { zh: "EN", en: "EN" },
+
+    "common.breadcrumb.home": { zh: "首页", en: "Home" },
+
+    "common.footer.home": { zh: "首页", en: "Home" },
+    "common.footer.about": { zh: "关于金隽", en: "About" },
+    "common.footer.news": { zh: "新闻聚焦", en: "News" },
+    "common.footer.contact": { zh: "联系我们", en: "Contact" },
+    "common.footer.legal": { zh: "法律申明", en: "Legal" },
+    "common.footer.icpLabel": { zh: "备案号", en: "ICP Filing" },
+    "common.footer.company": { zh: "上海金隽装饰工程有限公司", en: "Shanghai Jinjun Decoration Engineering Co., Ltd." },
+
+    "home.title": { zh: "上海金隽装饰工程有限公司 - 高端建筑装饰解决方案", en: "Shanghai Jinjun Decoration Engineering Co., Ltd. - Premium Architectural Decoration Solutions" },
+    "home.video.unsupported": { zh: "您的浏览器不支持视频播放", en: "Your browser does not support video playback." },
+    "home.video.unsupportedHtml5": { zh: "您的浏览器不支持HTML5视频播放", en: "Your browser does not support HTML5 video playback." },
+    "home.section.starProject.title": { zh: "明星工程", en: "Featured Project" },
+    "home.section.future.title": { zh: "展望未来", en: "Looking Ahead" },
+    "home.section.achievements.title": { zh: "卓越成就", en: "Achievements" },
+    "home.future.slogan": { zh: "引领行业创新，为世界创造更多价值", en: "Driving innovation and creating greater value for the world." },
+
+    "home.achievements.brochure": { zh: "综合版宣传册", en: "Company Brochure" },
+    "home.achievements.managementHandbook": { zh: "【工程管理手册】", en: "[Project Management Handbook]" },
+    "home.achievements.managementRegulation": { zh: "【工程管理条例规范】", en: "[Engineering Management Regulations]" },
+    "home.achievements.eg": { zh: "EG招商", en: "EG Partnership" },
+
+    "home.starProject.contentHtml": {
+      zh: [
+        "<p>项目名称：加利福尼亚州圣贝纳迪诺县先锋镇500栋联排别墅规划、设计、施工、工程管理及交付一体化项目</p>",
+        "<p>地块编号：20215</p>",
+        "<p>项目编号：21-21S</p>",
+        "<p>项目中标期：2022 年 4 月 18 日</p>",
+        "<p>美国法院行政办公室金门大道 211 号旧金山，加利福尼亚州，94118-4397</p>",
+        "<p>建筑工程合同授予函</p>",
+        "<p>致：上海金隽装饰工程有限公司</p>",
+        "<p>地址：中国上海市嘉定区沪宜公路 1188 号 12 幢 1 层 B 区 1489 室</p>",
+        "<p>标的授予人：美国加州法院第一大法官</p>",
+        "<p>特此通知贵司：加利福尼亚州政府与美国法院行政办公室拟与 IBS 建筑装饰有限公司签订合同，</p>",
+        "<p>授予贵司 “先锋镇500栋联排别墅施工前准备及建造工程”（项目编号：21-21S）的承包权。</p>",
+        "<p>该项目于2025年6月在美国加州正式启动奠基仪式，目前总体正处于规划调整与施工阶段</p>"
+      ].join(""),
+      en: [
+        "<p>Project: An integrated turnkey project covering planning, design, construction, engineering management, and delivery for 500 townhouses in Pioneer Town, San Bernardino County, California.</p>",
+        "<p>Parcel No.: 20215</p>",
+        "<p>Project No.: 21-21S</p>",
+        "<p>Award Date: April 18, 2022</p>",
+        "<p>Office of the U.S. Courts, 211 Golden Gate Avenue, San Francisco, California 94118-4397</p>",
+        "<p>Construction Contract Award Letter</p>",
+        "<p>To: Shanghai Jinjun Decoration Engineering Co., Ltd.</p>",
+        "<p>Address: Zone B, Room 1489, 1/F, Building 12, No. 1188 Huyi Road, Jiading District, Shanghai, China</p>",
+        "<p>Awarding Authority: Chief Justice of the Superior Court of California</p>",
+        "<p>We hereby notify your company that the Government of California and the Administrative Office of the U.S. Courts intend to enter into a contract with IBS Architectural Decoration Co., Ltd.,</p>",
+        "<p>granting your company the contract for “Pre-construction preparation and building works for 500 townhouses in Pioneer Town” (Project No.: 21-21S).</p>",
+        "<p>The project held its groundbreaking ceremony in California in June 2025 and is currently in the planning adjustment and construction phase.</p>"
+      ].join("")
+    },
+
+    "about.title": { zh: "金隽建筑装饰 - 关于金隽", en: "Jinjun Architectural Decoration - About" },
+    "about.breadcrumb.current": { zh: "关于金隽", en: "About" },
+    "about.section.about.title": { zh: "关于金隽", en: "About" },
+    "about.section.keyProject.title": { zh: "交钥匙工程", en: "Turnkey Services" },
+    "about.section.leader.title": { zh: "团队领袖", en: "Leadership" },
+    "about.section.global.title": { zh: "全球化建设工程", en: "Global Construction" },
+
+    "about.aboutContentHtml": {
+      zh: [
+        "上海金隽装饰工程有限公司成立于2005年，二十年致力于为世界五百强跨国企业和顶级豪宅提供专业性的设计、施工、工程管理以及软装与家具的设计施工一体化交钥匙工程.",
+        "<br><br>",
+        "在过去的二十年中，我们在综合性的大型规划项目、中国传统文化建筑群落的规划、五星级宾馆、特色饭店与酒店、工厂、实验室、办公楼、顶级老洋房别墅的翻新与改造等多个方面都拥有众多的成功实施项目案例(详见网站内的公司综合介绍宣传册)。与此同时,我们的团队成功地总结并归纳了施工与工程管理过程中的详尽实践方法与步骤;形成了一套系统化的“公司工程施工管理规范条例"(详见网站中的工程管理规范条例部分）。我们深知世界辽阔，各个国家人民都有自己独到的见解与贡献，为了弥补自己在高端科技研发上的不足，我们还积极地开展跨地域、跨领域，跨行业的交流合作项目(详见网站中的EG部分)。",
+        "<br><br>",
+        "通过不懈的努力与积极地洽谈与响应,经过漫长的五年左右的洽谈与协商，我们顺利拿下了美国加州政府面向全球四百家建设工程企业的邀标项目：“美国加州先锋镇的五百套联排别墅”的总体规划、设计、施工、施工管理一体化交钥匙工程。这一工程项目的中标标志着上海金隽装饰工程有限公司正从一个国内建设工程供应商，成功转型为全球化建设工程供应商。",
+        "<br><br>",
+        "前路漫漫，回望过去二十年的努力耕耘，所有的金隽员工必将再接再厉,展望更加光明、伟大的未来，为我们能成为全球顶级建设工程供应商而奋力前行,再创佳绩，打造出更加辉煌的未来，成为集东西方大成的\"建设工程\"领域的领军团队。"
+      ].join(""),
+      en: [
+        "Founded in 2005, Shanghai Jinjun Decoration Engineering Co., Ltd. has devoted two decades to delivering professional design, construction, project management, and integrated soft furnishing & furniture solutions for Fortune Global 500 multinational companies and luxury residences.",
+        "<br><br>",
+        "Over the past twenty years, we have completed a wide range of successful projects, including large-scale comprehensive planning, traditional Chinese architectural complexes, five-star hotels, boutique restaurants and hospitality venues, factories, laboratories, office buildings, and high-end historical villas (see the company brochure on this website). Meanwhile, our team has systematically summarized practical methods and step-by-step procedures across construction and project management, forming a standardized set of “Engineering Construction & Project Management Regulations” (see the relevant section on this website). We also recognize that the world is vast and that every country contributes unique perspectives. To strengthen our capabilities in advanced technology and R&D, we actively carry out cross-region, cross-domain, and cross-industry collaboration projects (see the EG section on this website).",
+        "<br><br>",
+        "Through persistent effort and extensive discussions over approximately five years, we successfully secured an international tender project from the Government of California, competing against around 400 construction companies worldwide: an integrated turnkey project for the overall planning, design, construction, and construction management of 500 townhouses in Pioneer Town, California. Winning this project marks Shanghai Jinjun’s successful transformation from a domestic construction service provider into a global construction service provider.",
+        "<br><br>",
+        "The road ahead is long. Looking back on two decades of dedication, every member of our team will continue to strive forward—toward a brighter and greater future—creating new achievements and building an even more remarkable legacy. Our goal is to become a world-class construction service provider and a leading team in the construction engineering field that integrates the best of Eastern and Western strengths."
+      ].join("")
+    },
+
+    "about.key.planDesign": { zh: "规划与设计", en: "Planning & Design" },
+    "about.key.construction": { zh: "施工", en: "Construction" },
+    "about.key.pm": { zh: "工程管理", en: "Project Management" },
+    "about.key.soft": { zh: "软装", en: "Soft Furnishing" },
+    "about.key.furniture": { zh: "家具及没备安装", en: "Furniture & Equipment Installation" },
+    "about.key.assist": { zh: "辅助工程", en: "Auxiliary Works" },
+
+    "about.leader.bioHtml": {
+      zh: [
+        "戴如东作为上海金隽装饰工程有限公司的始创人深耕高端空间营造领域二十载，凭借深厚的专业积淀与前瞻的行业视野，专注为世界五百强跨国企业及顶级别墅豪宅，提供从空间规划设计、精细化施工、全周期工程管理，到软装陈设与家具定制的一体化交钥匙服务。<br/>",
+        "她始终以客户需求为核心，打通 “设计构思 — 工程落地 — 品质管控 — 软装焕新” 的全链条服务闭环，无论是大型工程项目的规划没计，还是公共设施的落地施工，企业总部高效办公空间以及工厂与实验室都能精准匹配客户的功能需求与美学追求。<br/>",
+        "凭借二十年间数百个标杆项目的实操经验，她带领团队系统提炼并总结出工程施工与项目管理的全流程标准方法论，将项目前期的方案深化、中期的工艺把控、后期的验收交付等关键环节的实操要点进行拆解、沉淀，牵头编制形成企业专属的《工程施工管理规范条例》，为项目品质的稳定输出筑牢标准化根基（详情可查阅本网站的工程管理规范专栏）。<br/>"
+      ].join(""),
+      en: [
+        "As the founder of Shanghai Jinjun Decoration Engineering Co., Ltd., Dai Rudong has spent twenty years dedicated to high-end spatial creation. With deep professional expertise and forward-looking industry insight, she focuses on providing Fortune Global 500 multinational companies and premium villas with integrated turnkey services—from space planning and design, refined construction execution, and full-cycle project management, to soft furnishing and bespoke furniture solutions.<br/>",
+        "Always centered on client needs, she has built an end-to-end service loop that connects “design concept — on-site delivery — quality control — soft furnishing enhancement”. Whether it is the planning of large-scale projects, the construction delivery of public facilities, efficient office spaces for corporate headquarters, or factories and laboratories, her team consistently aligns functional requirements with aesthetic goals.<br/>",
+        "Leveraging hands-on experience from hundreds of benchmark projects over two decades, she has led the team to distill a standardized, end-to-end methodology for construction execution and project management. By breaking down and consolidating practical essentials across key stages—from early-stage design development, mid-stage process control, to final inspection and handover—she spearheaded the creation of the company’s proprietary “Engineering Construction & Project Management Regulations”, laying a solid foundation for consistent quality delivery (see the project management regulations section on this website).<br/>"
+      ].join("")
+    },
+
+    "about.global.system": { zh: "系统化管理", en: "Systematic Management" },
+    "about.global.integrated": { zh: "综合服务", en: "Integrated Services" },
+    "about.global.multi": { zh: "跨国企业", en: "Multinational Clients" },
+    "about.global.turnkey": { zh: "交钥匙工程", en: "Turnkey Delivery" },
+
+    "contact.title": { zh: "金隽建筑装饰 - 联系我们", en: "Jinjun Architectural Decoration - Contact" },
+    "contact.breadcrumb.current": { zh: "联系我们", en: "Contact" },
+    "contact.section.title": { zh: "联系方式", en: "Contact Information" },
+    "contact.company": { zh: "上海金隽装饰工程有限公司", en: "Shanghai Jinjun Decoration Engineering Co., Ltd." },
+    "contact.label.address": { zh: "地址：", en: "Address: " },
+    "contact.value.address": { zh: "上海市徐汇区漕溪北路28号6楼 D座", en: "Suite D, 6F, No. 28 Caoxi North Road, Xuhui District, Shanghai" },
+    "contact.label.phone": { zh: "电话：", en: "Tel: " },
+    "contact.value.phone": { zh: "021-5425 9460", en: "+86 21 5425 9460" },
+    "contact.label.fax": { zh: "传真：", en: "Fax: " },
+    "contact.value.fax": { zh: "021-5425 9461", en: "+86 21 5425 9461" },
+    "contact.label.email": { zh: "邮箱：", en: "Email: " },
+    "contact.value.email": { zh: "service@ibssh.com", en: "service@ibssh.com" },
+    "contact.label.website": { zh: "网址：", en: "Website: " },
+    "contact.value.website": { zh: "www.ibssh.com", en: "www.ibssh.com" },
+    "contact.advisorText": { zh: "关注戴小姐，资深顾问，二十年致力于为世界五百强跨国企业和顶级豪宅提供专业性的设计、施工、施工管理以及软装与家具的设计施工一体化交钥匙工程。", en: "Follow Ms. Dai, a senior consultant with 20 years of experience delivering integrated turnkey services—covering design, construction, construction management, and soft furnishing & furniture solutions—for Fortune Global 500 multinationals and luxury residences." },
+
+    "news.title": { zh: "金隽建筑装饰 - 新闻聚焦", en: "Jinjun Architectural Decoration - News" },
+    "news.breadcrumb.current": { zh: "新闻聚焦", en: "News" },
+    "news.item1.title": { zh: "金隽先锋镇别墅项目进展顺利", en: "Pioneer Town Villa Project Progressing Smoothly" },
+    "news.item1.desc": { zh: "金隽先锋镇别墅项目进展顺利，已于二零二五年六月正式举行了开工奠基仪式。", en: "The Pioneer Town villa project is progressing smoothly and held its official groundbreaking ceremony in June 2025." },
+    "news.item2.title": { zh: "建筑技术创新研讨会成功举办", en: "Architecture Technology Innovation Forum Successfully Held" },
+    "news.item2.desc": { zh: "聚焦行业前沿的建筑技术创新研讨会，于旧金山圆满举办，汇聚全球专家共探技术突破与绿色建筑发展新路径。", en: "A forward-looking forum on architectural technology innovation was successfully held in San Francisco, bringing together global experts to explore breakthroughs and new paths for green building." },
+    "news.item3.title": { zh: "金隽海外建筑人才招录计划", en: "Overseas Talent Recruitment Program" },
+    "news.item3.desc": { zh: "海外业务快速发展，金隽正式启动全球海外建设工程人才招录计划，在全球范围内招募拥有国际AIA大证人才。", en: "With rapid overseas growth, Jinjun has launched a global recruitment program for international construction talent, seeking professionals with recognized AIA credentials worldwide." },
+    "news.item4.title": { zh: "上海金隽装饰工程有限公司官网", en: "Official Website Launched" },
+    "news.item4.desc": { zh: "聚焦建筑设计领域的上海金隽装饰工程有限公司官网正式上线，深耕方案定制、技术创新与行业资源整合。", en: "The official website of Shanghai Jinjun Decoration Engineering is now live, focusing on tailored solutions, technology innovation, and industry resource integration." },
+    "news.pagination.prev": { zh: "上一页", en: "Previous" },
+    "news.pagination.next": { zh: "下一页", en: "Next" },
+
+    "notice.title": { zh: "金隽建筑装饰 - 法律声明", en: "Jinjun Architectural Decoration - Legal Notice" },
+    "notice.h1": { zh: "法律声明", en: "Legal Notice" },
+    "notice.contentHtml": {
+      zh: [
+        "<p>本网站（www.ibssh.com）由上海金隽装饰工程有限公司（以下简称“本公司”）建立。本公司提醒您（浏览本网站的用户）在浏览或使用本网站前，请仔细阅读下列内容。</p>",
+        "<p>任何人进入本网站、阅读任何内容、从本网站下载任何数据或使用本网站提供的信息，即表示同意接受并遵守下列条款：</p>",
+        "<h3>一、权利声明</h3>",
+        "<p>本网站的资料、信息、版面设计、图案、流程、声音、程序及其他内容的所有权、著作权及其他权利属于本公司或其他授权本公司使用者，此种权利受到《中华人民共和国民法典》、《中华人民共和国著作权法》、《中华人民共和国反不正当竞争法》及其他法律、法规、规范性法律文件及相关国际条约的保护，任何对上述权利的侵犯均有可能导致承担民事、行政或刑事责任。</p>",
+        "<p>非经本公司同意或授权，任何人不得对本网站内容进行修改、复制、抄袭、贩卖、展示、公开、散布或者以其他方式用之于任何不正当的、有损于本公司合法权益的商业目的。</p>",
+        "<p>非经本公司同意或授权，其他的网站或互联网信息系统，亦不得使用本网站的链接和内容，或将本网站的网页内容显示于其他网站的网页内。</p>",
+        "<h3>二、免责声明</h3>",
+        "<p>本网站中所发布的信息，不附加任何形式的要约、承诺或保证，本公司也不保证本网站信息的绝对准确性和绝对完整性。</p>",
+        "<p>本公司可随时更改本网站内容，而无须另作通知，并且不保证在内容变化时及时更新，也不保证在更新时通知您。</p>",
+        "<p>任何人，因根据本网站内容作出的行为或因使用本网站内容，而导致的任何直接的、间接的、附带的或给第三人造成的损失，本公司概不负责，均无须承担法律责任。</p>",
+        "<h3>三、使用守则</h3>",
+        "<p>任何人在本网站进行的活动，必须遵守中国各项法律、法规、行政规章及司法解释的规定，遵守中国有关互联网管理、数据安全、个人信息保护等相关规定。</p>",
+        "<p>任何人不得在本网站发布包含任何反动、恐吓、诽谤、隐私、淫秽、色情或其他违法内容的信息。</p>",
+        "<h3>四、解释权</h3>",
+        "<p>本声明的解释权及对本网站使用的解释权属于上海金隽装饰工程有限公司。</p>"
+      ].join(""),
+      en: [
+        "<p>This website (`www.ibssh.com`) is established by Shanghai Jinjun Decoration Engineering Co., Ltd. (hereinafter referred to as “the Company”). The Company reminds you (users browsing this website) to carefully read the following content before browsing or using this website.</p>",
+        "<p>By accessing this website, reading any content, downloading any data, or using any information provided on this website, you agree to accept and comply with the following terms:</p>",
+        "<h3>I. Rights Statement</h3>",
+        "<p>The ownership, copyrights, and other rights of the materials, information, layout design, graphics, processes, audio, programs, and other content on this website belong to the Company or other authorized parties. Such rights are protected by the Civil Code of the People’s Republic of China, the Copyright Law of the People’s Republic of China, the Anti-Unfair Competition Law of the People’s Republic of China, other laws and regulations, normative legal documents, and relevant international treaties. Any infringement of the above rights may result in civil, administrative, or criminal liabilities.</p>",
+        "<p>Without the Company’s consent or authorization, no one may modify, copy, plagiarize, sell, display, publish, distribute, or otherwise use the content of this website for any improper purpose that harms the Company’s legitimate rights and interests.</p>",
+        "<p>Without the Company’s consent or authorization, other websites or internet information systems may not use links or content from this website, nor display the content of this website within their own pages.</p>",
+        "<h3>II. Disclaimer</h3>",
+        "<p>The information published on this website does not constitute any form of offer, commitment, or warranty. The Company does not guarantee the absolute accuracy or completeness of the information on this website.</p>",
+        "<p>The Company may change the content of this website at any time without notice, and does not guarantee timely updates when content changes, nor notification to users when updates occur.</p>",
+        "<p>The Company shall not be liable for any direct, indirect, incidental, or third-party losses arising from actions taken based on the content of this website or from the use of the content of this website, and shall not bear any legal responsibility.</p>",
+        "<h3>III. Rules of Use</h3>",
+        "<p>Any activities conducted on this website must comply with all applicable laws, regulations, administrative rules, and judicial interpretations of China, as well as relevant requirements related to internet governance, data security, and personal information protection.</p>",
+        "<p>No one may publish on this website any content that is subversive, threatening, defamatory, invasive of privacy, obscene, pornographic, or otherwise illegal.</p>",
+        "<h3>IV. Right of Interpretation</h3>",
+        "<p>The right of interpretation of this statement and the right to interpret the use of this website belong to Shanghai Jinjun Decoration Engineering Co., Ltd.</p>"
+      ].join("")
+    },
+
+    "reader.hint.totalPages": { zh: "共 {n} 页", en: "Total: {n} pages" },
+    "reader.hint.totalPagesHtml": { zh: "共 <span id=\"totalPageCount\">5</span> 页", en: "Total: <span id=\"totalPageCount\">5</span> pages" },
+    "reader.btn.prev": { zh: "上一页", en: "Previous" },
+    "reader.btn.next": { zh: "下一页", en: "Next" },
+    "reader.btn.backToCover": { zh: "返回封面", en: "Back to Cover" },
+    "reader.input.placeholder.pageNo": { zh: "页码", en: "Page" },
+    "reader.loading": { zh: "正在加载...", en: "Loading..." },
+
+    "reader.brochure.title": { zh: "IBS综合版宣传册", en: "IBS Company Brochure" },
+    "reader.bookone.title": { zh: "IBS工程品质健康安全管理表", en: "IBS Quality, Health & Safety Management Form" },
+    "reader.bookone.titleAlt": { zh: "IBS工程质量健康安全管理表", en: "IBS Quality, Health & Safety Management Form" },
+    "reader.booktwo.title": { zh: "IBS工程质量健康安全管理手册", en: "IBS Quality, Health & Safety Management Handbook" }
+  };
+})();

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBS  Construction Decoration Ltd., - News</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', 'Arial', sans-serif; }
+        body { color: #333; background-color: #f8f9fa; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+        ul { list-style: none; }
+        .container { width: 90%; max-width: 1400px; margin: 0 auto; }
+        img, video { max-width: 100%; height: auto; display: block; }
+        button { cursor: pointer; border: none; background: transparent; transition: all 0.3s ease; }
+
+        .header { background-color: #ffffff; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 999; }
+        .header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .logo { width: 170px; }
+        .nav-list { display: flex; gap: 3rem; font-size: 1rem; font-weight: 500; }
+        .nav-list li a:hover { color: #EC6C00; }
+        .lang-switch { display: flex; gap: 1rem; font-size: 0.9rem; }
+        .lang-switch a { padding: 0.5rem 1rem; border: 1px solid #e0e0e0; border-radius: 4px; }
+        .lang-switch a.active { background-color: #EC6C00; color: #fff; border-color: #EC6C00; }
+
+        .news-banner { width: 100%; height: 400px; }
+        .news-banner img { width: 100%; height: 100%; object-fit: cover; }
+
+        .breadcrumb { padding: 2rem 0; background-color: #ffffff; font-size: 0.95rem; color: #666; }
+        .breadcrumb a { color: #EC6C00; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb span { margin: 0 0.5rem; color: #999; }
+
+        .news-list { padding: 2rem 0 4rem; background-color: #ffffff; }
+        .news-list .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 3rem; }
+        .news-item { display: flex; gap: 2rem; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; box-shadow: 0 3px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease; }
+        .news-item:hover { transform: translateY(-5px); }
+        .news-img { width: 40%; flex-shrink: 0; }
+        .news-img img { width: 100%; height: 100%; object-fit: cover; }
+        .news-content { padding: 1.8rem 1.5rem; display: flex; flex-direction: column; justify-content: center; }
+        .news-title { font-size: 1.2rem; color: #222; margin-bottom: 1rem; font-weight: 500; transition: color 0.3s ease; }
+        .news-item:hover .news-title { color: #EC6C00; }
+        .news-desc { font-size: 0.95rem; color: #666; line-height: 1.7; }
+
+        .news-pagination { padding: 0 0 6rem; background-color: #ffffff; text-align: center; }
+        .pagination-list { display: inline-flex; gap: 0.8rem; align-items: center; }
+        .pagination-item a { display: inline-block; width: 42px; height: 42px; line-height: 42px; border-radius: 6px; background-color: #f8f9fa; font-size: 0.95rem; color: #666; transition: all 0.3s ease; }
+        .pagination-item a:hover { background-color: #e9f0fb; color: #EC6C00; }
+        .pagination-item a.active { background-color: #EC6C00; color: #ffffff; box-shadow: 0 2px 8px rgba(0, 113, 227, 0.4); }
+        .pagination-item.prev a, .pagination-item.next a { width: 100px; }
+
+        @media (max-width: 768px) {
+            .header .container { flex-direction: column; gap: 1rem; }
+            .nav-list { gap: 1.5rem; }
+            .news-banner { height: 280px; }
+            .news-list .container { grid-template-columns: 1fr; gap: 2rem; }
+            .news-item { flex-direction: column; }
+            .news-img { width: 100%; height: 200px; }
+            .news-content { padding: 1.5rem; }
+            .news-title { font-size: 1.1rem; }
+            .pagination-list { gap: 0.5rem; }
+            .pagination-item a { width: 36px; height: 36px; line-height: 36px; font-size: 0.85rem; }
+            .pagination-item.prev a, .pagination-item.next a { width: 80px; }
+        }
+        @media (max-width: 480px) {
+            .news-banner { height: 200px; }
+            .breadcrumb { padding: 1.5rem 0; font-size: 0.85rem; }
+            .news-list { padding: 1rem 0 2rem; }
+            .news-img { height: 160px; }
+            .news-content { padding: 1.2rem; }
+            .news-desc { font-size: 0.85rem; }
+            .pagination-item.hidden-sm { display: none; }
+            .pagination-item a { width: 32px; height: 32px; line-height: 32px; }
+            .pagination-item.prev a, .pagination-item.next a { width: 70px; font-size: 0.8rem; }
+            .social-icons { gap: 1rem; }
+            .footer-nav { gap: 1.5rem; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+<!-- Header (EN) -->
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="../images/logo1.png" alt="IBS  Construction Decoration Ltd.,">
+        </a>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="index.html#achievements">Achievements</a></li>
+                <li><a href="index.html#star-project">Celebrity Project</a></li>
+                <li><a href="index.html#future">Look Ahead</a></li>
+            </ul>
+        </nav>
+        <div class="lang-switch">
+            <a href="../news.html">中文</a>
+            <a href="#" class="active" onclick="return false;">EN</a>
+        </div>
+    </div>
+</header>
+
+    <section class="news-banner">
+        <img src="../images/newsbanner.jpg" alt="News Banner">
+    </section>
+
+    <section class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a>
+            <span>></span>
+            <span>News</span>
+        </div>
+    </section>
+
+    <section class="news-list">
+        <div class="container">
+            <div class="news-item">
+                <div class="news-img"><img src="../images/newpc1.jpg" alt="Pioneer Town Villa Project"></div>
+                <div class="news-content">
+                    <h3 class="news-title">Pioneer Town Villa Project Progressing Smoothly</h3>
+                    <p class="news-desc">The Pioneer Town villa project is progressing smoothly and held its official groundbreaking ceremony in June 2025.</p>
+                </div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-img"><img src="../images/newpc2.jpg" alt="Innovation Forum"></div>
+                <div class="news-content">
+                    <h3 class="news-title">Architecture Technology Innovation Forum Successfully Held</h3>
+                    <p class="news-desc">A forward-looking forum on architectural technology innovation was successfully held in San Francisco, bringing together global experts to explore breakthroughs and new paths for green building.</p>
+                </div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-img"><img src="../images/newpc3.jpg" alt="Overseas Talent Recruitment"></div>
+                <div class="news-content">
+                    <h3 class="news-title">Overseas Talent Recruitment Program</h3>
+                    <p class="news-desc">With rapid overseas growth, IBS Construction Decoration LTD. has launched a global recruitment program for international construction talent, seeking professionals with recognized AIA credentials worldwide.</p>
+                </div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-img"><img src="../images/newpc4e.jpg" alt="Official Website Launched"></div>
+                <div class="news-content">
+                    <h3 class="news-title">New Official Website Launched</h3>
+                    <p class="news-desc">The official website of IBS  Construction Decoration Ltd., is now launched, its new version focusing on tailored solutions, technology innovation, and industry resource integration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="news-pagination">
+        <div class="container">
+            <ul class="pagination-list">
+                <li class="pagination-item prev"><a href="#" title="Previous">Previous</a></li>
+                <li class="pagination-item"><a href="#" class="active">1</a></li>
+                <li class="pagination-item"><a href="#">2</a></li>
+                <li class="pagination-item hidden-sm"><a href="#">3</a></li>
+                <li class="pagination-item hidden-sm"><a href="#">4</a></li>
+                <li class="pagination-item"><a href="#">5</a></li>
+                <li class="pagination-item next"><a href="#" title="Next">Next</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <style>
+	/* 底部区域 - 与前四页完全一致，保证网站统一性 */
+        .footer {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 1.5rem 0 1rem;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .social-icons a {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+        .social-icons a:hover {
+            color: #EC6C00;
+        }
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+			font-weight: 600;
+        }
+        .footer-nav a {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .footer-nav a:hover {
+            color: #fff;
+        }
+        .copyright {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #999;
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+        }
+</style>
+	
+	
+
+
+<!-- Footer (EN) -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About us</a>
+            <a href="news.html">News</a>
+            <a href="contact.html">Contact</a>
+            <a href="notice.html">Legal</a>
+        </div>
+        <div class="social-icons">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="copyright">
+            Copyright © 2025 <span>IBS  Construction Decoration Ltd.,</span>
+            <a style="color:#999; text-decoration:none;" href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2021012540号-1</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="IBS-booktwo">
+    <title data-i18n="reader.booktwo.title">IBS工程质量健康安全管理手册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5e7d3 0%, #e8d9c5 100%);
+            min-height: 100vh;
+            color: #5c3c1a;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* 语言切换（独立页面补齐） */
+        .lang-switch {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 9999;
+            display: flex;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .lang-switch a {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(139, 90, 43, 0.45);
+            background: rgba(245, 231, 211, 0.85);
+            color: #5c3c1a;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .lang-switch a.active {
+            background: #8b5a2b;
+            color: #f5e7d3;
+            border-color: #5c3c1a;
+        }
+
+
+        /* 主容器 - 自适应宽度，占据屏幕大部分空间 */
+        .main-container {
+            width: 100%;
+            max-width: 95vw;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+        }
+        
+        /* 状态提示 */
+        .status-message {
+            margin: 10px auto;
+            padding: 10px 15px;
+            background: #f0e6d8;
+            border-radius: 6px;
+            color: #8b5a2b;
+            font-size: 14px;
+            max-width: 600px;
+            text-align: center;
+            display: none;
+            border: 1px solid #d4b896;
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .status-message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #a5d6a7;
+        }
+
+        .status-message.info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border-color: #90caf9;
+        }
+
+        .status-message.error {
+            background: #ffebee;
+            color: #c62828;
+            border-color: #ef9a9a;
+        }
+
+        /* 封面容器 - 自适应大小 */
+        .cover-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 80vh; /* 占据视口高度的80% */
+            perspective: 1200px;
+        }
+
+        /* 封面书 - 自适应大小，最大占满容器 */
+        .cover-book {
+            width: 60vw; /* 自适应宽度 */
+            height: 75vh; /* 自适应高度 */
+            max-width: 600px; /* 最大宽度限制 */
+            max-height: 750px; /* 最大高度限制 */
+            min-width: 300px; /* 最小宽度限制 */
+            min-height: 375px; /* 最小高度限制 */
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transform-origin: center center;
+            transition: all 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 向下移动并放大虚化动画 - 封面整体动画 */
+        .cover-book.zooming {
+            transform: scale(1.8) translateY(10vh);
+            opacity: 0;
+            filter: blur(20px);
+        }
+
+        /* 封面内容包装器 - 用于整体动画 */
+        .cover-content-wrapper {
+            width: 100%;
+            height: 100%;
+            transition: inherit; /* 继承封面动画 */
+        }
+
+        .cover-front, .cover-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(92, 60, 26, 0.3);
+        }
+
+        .cover-front {
+            background: linear-gradient(135deg, #a67c52, #8b5a2b);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5%;
+            transform: rotateY(0deg);
+            z-index: 2;
+            border: 1px solid #5c3c1a;
+        }
+
+        .cover-back {
+            background: linear-gradient(135deg, #8b5a2b, #a67c52);
+            transform: rotateY(180deg);
+            border: 1px solid #5c3c1a;
+        }
+
+        .cover-image {
+            max-width: 80%;
+            max-height: 60%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 3%;
+            border: 2px solid #5c3c1a;
+        }
+
+        .cover-title {
+            color: #f5e7d3;
+            font-size: clamp(20px, 3vw, 32px); /* 自适应字体大小 */
+            font-weight: bold;
+            margin-bottom: 2%;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .cover-hint {
+            color: rgba(245, 231, 211, 0.9);
+            font-size: clamp(12px, 1.5vw, 16px);
+            font-style: italic;
+            margin-top: 5%;
+            padding: 8px 16px;
+            background: rgba(92, 60, 26, 0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(245, 231, 211, 0.2);
+        }
+
+        /* 控制按钮 */
+        .control-btn {
+            padding: 8px 15px;
+            background: linear-gradient(to bottom, #d4b896, #b8945f);
+            border: 1px solid #8b5a2b;
+            color: #5c3c1a;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .control-btn:hover {
+            background: linear-gradient(to bottom, #e8d9c5, #d4b896);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 阅读器容器 - 自适应大小，与封面相同比例 */
+        .reader-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 80vh; /* 与封面相同高度 */
+        }
+
+        .reader-wrapper {
+            width: 120vw; /* 封面宽度的2倍，因为显示两页 */
+            max-width: 1200px; /* 最大宽度限制 */
+            min-width: 600px; /* 最小宽度限制 */
+            height: 75vh; /* 与封面相同高度 */
+            max-height: 750px; /* 最大高度限制 */
+            min-height: 375px; /* 最小高度限制 */
+            background: #f5e7d3;
+            border-radius: 12px;
+            box-shadow: 0 8px 40px rgba(92, 60, 26, 0.2);
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #8b5a2b;
+        }
+
+        /* 阅读器控制栏 */
+        .reader-controls {
+            background: linear-gradient(to right, #8b5a2b, #a67c52);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-label {
+            color: #f5e7d3;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .page-navigation {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-input {
+            width: 60px;
+            padding: 8px;
+            background: rgba(245, 231, 211, 0.9);
+            border: 1px solid #8b5a2b;
+            border-radius: 4px;
+            text-align: center;
+            color: #5c3c1a;
+            font-weight: 600;
+        }
+
+        .page-input::placeholder {
+            color: rgba(92, 60, 26, 0.6);
+        }
+
+        .page-count {
+            color: #f5e7d3;
+            font-weight: 600;
+        }
+
+        /* 阅读器内容区 */
+        .reader-content {
+            padding: 2%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e8d9c5;
+            height: calc(100% - 70px); /* 减去控制栏高度 */
+            width: 100%;
+        }
+
+        /* 真实的3D翻页阅读器样式 - 自适应大小 */
+        .flipbook-real-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            perspective: 1500px;
+            margin: 0 auto;
+        }
+
+        .flipbook-real {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* 页面样式 - 自适应大小 */
+        .page-real {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5e7d3;
+            box-shadow: 0 0 20px rgba(92, 60, 26, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            backface-visibility: hidden;
+            border: 1px solid #d4b896;
+        }
+
+        .page-real.left {
+            left: 0;
+            z-index: 2;
+        }
+
+        .page-real.right {
+            right: 0;
+            z-index: 3;
+        }
+
+        /* 翻页元素样式 */
+        .flip-page {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            right: 0;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.42, 0, 0.58, 1);
+            z-index: 10;
+        }
+
+        .flip-page.flipping {
+            transform: rotateY(-180deg);
+        }
+
+        .flip-page.flipping-back {
+            transform: rotateY(0deg);
+        }
+
+        .flip-page .front,
+        .flip-page .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5e7d3;
+            box-shadow: 0 0 20px rgba(92, 60, 26, 0.2);
+        }
+
+        .flip-page .front {
+            transform: rotateY(0deg);
+        }
+
+        .flip-page .back {
+            transform: rotateY(180deg);
+            background: #e8d9c5;
+        }
+
+        .page-image-real {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* 页码样式优化 - 带圆圈背景，根据单双数调整位置 */
+        .page-number-real {
+            position: absolute;
+            bottom: 20px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #5c3c1a;
+            font-size: 16px;
+            font-weight: bold;
+            background: rgba(245, 231, 211, 0.85);
+            border-radius: 50%; /* 圆形背景 */
+            box-shadow: 0 2px 8px rgba(92, 60, 26, 0.3);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            border: 1px solid #d4b896;
+        }
+
+        /* 单数页码靠左 */
+        .page-number-real.odd {
+            left: 20px;
+            right: auto;
+        }
+
+        /* 双数页码靠右 */
+        .page-number-real.even {
+            right: 20px;
+            left: auto;
+        }
+
+        /* 翻页元素中的页码同样应用圆圈样式 */
+        .flip-page .front .page-number-real,
+        .flip-page .back .page-number-real {
+            position: absolute;
+            bottom: 20px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #5c3c1a;
+            font-size: 16px;
+            font-weight: bold;
+            background: rgba(245, 231, 211, 0.85);
+            border-radius: 50%; /* 圆形背景 */
+            box-shadow: 0 2px 8px rgba(92, 60, 26, 0.3);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            border: 1px solid #d4b896;
+        }
+
+        /* 翻页元素中单数页码靠左 */
+        .flip-page .front .page-number-real.odd,
+        .flip-page .back .page-number-real.odd {
+            left: 20px;
+            right: auto;
+        }
+
+        /* 翻页元素中双数页码靠右 */
+        .flip-page .front .page-number-real.even,
+        .flip-page .back .page-number-real.even {
+            right: 20px;
+            left: auto;
+        }
+
+        /* 翻页控制区 */
+        .flip-controls-real {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .flip-area-real {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            z-index: 30;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .flip-area-real.left {
+            left: 0;
+        }
+
+        .flip-area-real.right {
+            right: 0;
+        }
+
+        .flip-area-real:hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(139, 90, 43, 0.1);
+        }
+
+        /* 加载状态 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(245, 231, 211, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #d4b896;
+            border-top: 5px solid #8b5a2b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            color: #5c3c1a;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* 错误消息 */
+        .error-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ffeaea;
+            border: 1px solid #e6b3b3;
+            color: #a52a2a;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 2001;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        /* 返回封面按钮 */
+        .back-to-cover-btn {
+            background: linear-gradient(135deg, #a67c52, #8b5a2b);
+            color: #f5e7d3;
+            border: 1px solid #5c3c1a;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+			display:none;
+        }
+
+        .back-to-cover-btn:hover {
+            background: linear-gradient(135deg, #8b5a2b, #5c3c1a);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 动画 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 响应式设计 - 进一步优化自适应 */
+        @media (max-width: 1200px) {
+            .cover-book {
+                width: 70vw;
+                height: 80vh;
+            }
+            
+            .reader-wrapper {
+                width: 140vw;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .cover-book {
+                width: 80vw;
+                height: 85vh;
+            }
+            
+            .reader-wrapper {
+                width: 160vw;
+            }
+            
+            .reader-controls {
+                padding: 10px 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .main-container {
+                max-width: 98vw;
+                min-height: 85vh;
+            }
+            
+            .cover-container {
+                height: 85vh;
+            }
+            
+            .cover-book {
+                width: 90vw;
+                height: 90vh;
+            }
+            
+            .reader-container {
+                height: 85vh;
+            }
+            
+            .reader-wrapper {
+                width: 180vw;
+                min-width: 500px;
+                height: 90vh;
+            }
+            
+            .reader-controls {
+                flex-direction: column;
+                gap: 10px;
+                padding: 8px 12px;
+            }
+            
+            .control-group {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .cover-title {
+                font-size: clamp(18px, 4vw, 24px);
+            }
+            
+            .cover-hint {
+                font-size: clamp(11px, 2vw, 14px);
+            }
+            
+            /* 响应式页码样式 */
+            .page-number-real {
+                width: 36px;
+                height: 36px;
+                line-height: 36px;
+                font-size: 14px;
+                bottom: 15px;
+            }
+            
+            .page-number-real.odd {
+                left: 15px;
+            }
+            
+            .page-number-real.even {
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .cover-book {
+                min-width: 280px;
+                min-height: 350px;
+            }
+            
+            .reader-wrapper {
+                min-width: 400px;
+                min-height: 300px;
+            }
+            
+            .control-btn,
+            .back-to-cover-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            
+            .page-input {
+                width: 50px;
+                padding: 6px;
+            }
+            
+            .cover-image {
+                max-width: 85%;
+                max-height: 55%;
+            }
+            
+            .cover-title {
+                font-size: clamp(16px, 4.5vw, 20px);
+            }
+            
+            /* 响应式页码样式 */
+            .page-number-real {
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+                font-size: 12px;
+                bottom: 10px;
+            }
+            
+            .page-number-real.odd {
+                left: 10px;
+            }
+            
+            .page-number-real.even {
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cover-book {
+                width: 95vw;
+                height: 95vh;
+            }
+            
+            .reader-wrapper {
+                width: 190vw;
+            }
+            
+            .cover-hint {
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <a href="booktwo.html" class="active">中文</a>
+        <a href="en/booktwo.html">EN</a>
+    </div>
+
+
+    <!-- 主内容区 -->
+    <div class="main-container">
+        <!-- 状态提示 -->
+        <div class="status-message" id="statusMessage"></div>
+        
+        <!-- 封面容器 -->
+        <div class="cover-container" id="coverContainer">
+            <div class="cover-book" id="coverBook">
+                <div class="cover-content-wrapper">
+                    <div class="cover-front">
+                        <img id="coverImage" class="cover-image" src="booktwo/01.jpg" alt="IBS工程质量健康安全管理手册" data-i18n-attr='{"alt":"reader.booktwo.title"}'>
+                        <div class="cover-title" id="coverTitle" data-i18n="reader.booktwo.title">IBS工程质量健康安全管理手册</div>
+                        <div class="cover-hint" data-i18n-html="reader.hint.totalPagesHtml">共 <span id="totalPageCount">5</span> 页</div>
+                    </div>
+                    <div class="cover-back"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 阅读器容器 -->
+        <div class="reader-container" id="readerContainer">
+            <!-- 阅读器控制栏 -->
+            <div class="reader-wrapper">
+                <div class="reader-controls">
+                    <div class="control-group">
+                        <button class="control-btn" id="prevBtn" data-i18n="reader.btn.prev">上一页</button>
+                        <div class="page-navigation">
+                            <input type="number" class="page-input" id="pageInput" min="1" value="1" placeholder="页码" data-i18n-placeholder="reader.input.placeholder.pageNo">
+                            <span id="totalPages" class="page-count">/ 5</span>
+                        </div>
+                        <button class="control-btn" id="nextBtn" data-i18n="reader.btn.next">下一页</button>
+                    </div>
+                    <button class="back-to-cover-btn" id="backToCoverBtn" data-i18n="reader.btn.backToCover">返回封面</button>
+                </div>
+                
+                <!-- 阅读器内容区 -->
+                <div class="reader-content">
+                    <!-- 真实的3D翻页阅读器 -->
+                    <div class="flipbook-real-container" id="flipbookRealContainer">
+                        <div class="flipbook-real" id="flipbookReal">
+                            <!-- 左侧固定页面 -->
+                            <div class="page-real left" id="leftPageReal">
+                                <img id="leftImageReal" class="page-image-real" src="booktwo/02.jpg">
+                                <div class="page-number-real" id="leftPageNumReal">1</div>
+                            </div>
+                            
+                            <!-- 右侧固定页面 -->
+                            <div class="page-real right" id="rightPageReal">
+                                <img id="rightImageReal" class="page-image-real" src="booktwo/03.jpg">
+                                <div class="page-number-real" id="rightPageNumReal">2</div>
+                            </div>
+                        </div>
+                        <div class="flip-controls-real">
+                            <div class="flip-area-real left" id="flipLeftReal"></div>
+                            <div class="flip-area-real right" id="flipRightReal"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载遮罩层 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText" data-i18n="reader.loading">正在加载...</div>
+    </div>
+
+    <!-- 错误消息 -->
+    <div class="error-message" id="errorMessage"></div>
+
+    <script src="js/ibs-i18n-dict.js"></script>
+    <script src="js/ibs-i18n.js"></script>
+
+    <script>
+
+        // 图片电子杂志生成器应用 - 自适应大屏版本
+        class AdaptiveWoodStyleImageMagazineGenerator {
+            constructor() {
+                this.images = [
+                    { id: 1, src: 'booktwo/02.jpg', name: 'ibs' },
+                    { id: 2, src: 'booktwo/03.jpg', name: 'ibs' },
+                    { id: 3, src: 'booktwo/04.jpg', name: 'ibs' },
+                    { id: 4, src: 'booktwo/05.jpg', name: 'ibs' },
+                    { id: 5, src: 'booktwo/06.jpg', name: 'ibs' },
+					{ id: 6, src: 'booktwo/07.jpg', name: 'ibs' },
+					{ id: 7, src: 'booktwo/08.jpg', name: 'ibs' },
+					{ id: 8, src: 'booktwo/09.jpg', name: 'ibs' },
+					{ id: 9, src: 'booktwo/10.jpg', name: 'ibs' },
+					{ id: 10, src: 'booktwo/11.jpg', name: 'ibs' },
+					{ id: 11, src: 'booktwo/12.jpg', name: 'ibs' },
+                    { id: 12, src: 'booktwo/13.jpg', name: 'ibs' },
+                    { id: 13, src: 'booktwo/14.jpg', name: 'ibs' },
+                    { id: 14, src: 'booktwo/15.jpg', name: 'ibs' },
+                    { id: 15, src: 'booktwo/16.jpg', name: 'ibs' },
+					{ id: 16, src: 'booktwo/17.jpg', name: 'ibs' },
+					{ id: 17, src: 'booktwo/18.jpg', name: 'ibs' },
+					{ id: 18, src: 'booktwo/19.jpg', name: 'ibs' },
+					{ id: 19, src: 'booktwo/20.jpg', name: 'ibs' },
+					{ id: 20, src: 'booktwo/21.jpg', name: 'ibs' },
+					{ id: 21, src: 'booktwo/22.jpg', name: 'ibs' },
+                    { id: 22, src: 'booktwo/23.jpg', name: 'ibs' },
+                    { id: 23, src: 'booktwo/24.jpg', name: 'ibs' },
+                    { id: 24, src: 'booktwo/25.jpg', name: 'ibs' },
+                    { id: 25, src: 'booktwo/26.jpg', name: 'ibs' },
+					{ id: 26, src: 'booktwo/27.jpg', name: 'ibs' },
+					{ id: 27, src: 'booktwo/28.jpg', name: 'ibs' },
+					{ id: 28, src: 'booktwo/29.jpg', name: 'ibs' },
+					{ id: 29, src: 'booktwo/30.jpg', name: 'ibs' },
+					{ id: 30, src: 'booktwo/31.jpg', name: 'ibs' },
+					{ id: 31, src: 'booktwo/32.jpg', name: 'ibs' },
+                    { id: 32, src: 'booktwo/33.jpg', name: 'ibs' },
+                    { id: 33, src: 'booktwo/34.jpg', name: 'ibs' },
+                    { id: 34, src: 'booktwo/35.jpg', name: 'ibs' },
+                    { id: 35, src: 'booktwo/36.jpg', name: 'ibs' },
+					{ id: 36, src: 'booktwo/37.jpg', name: 'ibs' },
+					{ id: 37, src: 'booktwo/38.jpg', name: 'ibs' },
+					{ id: 38, src: 'booktwo/39.jpg', name: 'ibs' },
+					{ id: 39, src: 'booktwo/40.jpg', name: 'ibs' },
+					{ id: 40, src: 'booktwo/41.jpg', name: 'ibs' },
+					{ id: 41, src: 'booktwo/42.jpg', name: 'ibs' },
+                    { id: 42, src: 'booktwo/43.jpg', name: 'ibs' },
+                    { id: 43, src: 'booktwo/44.jpg', name: 'ibs' },
+                    { id: 44, src: 'booktwo/45.jpg', name: 'ibs' },
+                    { id: 45, src: 'booktwo/46.jpg', name: 'ibs' },
+					{ id: 46, src: 'booktwo/47.jpg', name: 'ibs' },
+					{ id: 47, src: 'booktwo/48.jpg', name: 'ibs' },
+					{ id: 48, src: 'booktwo/49.jpg', name: 'ibs' },
+					{ id: 49, src: 'booktwo/50.jpg', name: 'ibs' },
+					{ id: 50, src: 'booktwo/51.jpg', name: 'ibs' },
+					{ id: 51, src: 'booktwo/52.jpg', name: 'ibs' },
+                    { id: 52, src: 'booktwo/53.jpg', name: 'ibs' },
+                    { id: 53, src: 'booktwo/54.jpg', name: 'ibs' },
+                    { id: 54, src: 'booktwo/55.jpg', name: 'ibs' },
+                    { id: 55, src: 'booktwo/56.jpg', name: 'ibs' },
+					{ id: 56, src: 'booktwo/57.jpg', name: 'ibs' },
+					{ id: 57, src: 'booktwo/58.jpg', name: 'ibs' },
+					{ id: 58, src: 'booktwo/59.jpg', name: 'ibs' },
+					{ id: 59, src: 'booktwo/60.jpg', name: 'ibs' },
+					{ id: 60, src: 'booktwo/61.jpg', name: 'ibs' },
+					{ id: 61, src: 'booktwo/62.jpg', name: 'ibs' },
+                    { id: 62, src: 'booktwo/63.jpg', name: 'ibs' },
+                    { id: 63, src: 'booktwo/64.jpg', name: 'ibs' },
+                    { id: 64, src: 'booktwo/65.jpg', name: 'ibs' },
+                    { id: 65, src: 'booktwo/66.jpg', name: 'ibs' },
+					{ id: 66, src: 'booktwo/67.jpg', name: 'ibs' },
+					{ id: 67, src: 'booktwo/68.jpg', name: 'ibs' },
+					{ id: 68, src: 'booktwo/69.jpg', name: 'ibs' },
+					{ id: 69, src: 'booktwo/70.jpg', name: 'ibs' },
+					{ id: 70, src: 'booktwo/71.jpg', name: 'ibs' },
+					{ id: 71, src: 'booktwo/72.jpg', name: 'ibs' },
+                    { id: 72, src: 'booktwo/73.jpg', name: 'ibs' },
+                    { id: 73, src: 'booktwo/74.jpg', name: 'ibs' },
+                    { id: 74, src: 'booktwo/75.jpg', name: 'ibs' },
+                    { id: 75, src: 'booktwo/76.jpg', name: 'ibs' },
+					{ id: 76, src: 'booktwo/77.jpg', name: 'ibs' },
+					{ id: 77, src: 'booktwo/78.jpg', name: 'ibs' },
+					{ id: 78, src: 'booktwo/79.jpg', name: 'ibs' },
+					{ id: 79, src: 'booktwo/80.jpg', name: 'ibs' },
+					{ id: 80, src: 'booktwo/81.jpg', name: 'ibs' },
+					{ id: 81, src: 'booktwo/82.jpg', name: 'ibs' },
+                    { id: 82, src: 'booktwo/83.jpg', name: 'ibs' },
+                    { id: 83, src: 'booktwo/84.jpg', name: 'ibs' },
+                    { id: 84, src: 'booktwo/85.jpg', name: 'ibs' },
+                    { id: 85, src: 'booktwo/86.jpg', name: 'ibs' },
+					{ id: 86, src: 'booktwo/87.jpg', name: 'ibs' },
+					{ id: 87, src: 'booktwo/88.jpg', name: 'ibs' },
+					{ id: 88, src: 'booktwo/89.jpg', name: 'ibs' },
+					{ id: 89, src: 'booktwo/90.jpg', name: 'ibs' },
+					{ id: 90, src: 'booktwo/91.jpg', name: 'ibs' },
+					{ id: 91, src: 'booktwo/92.jpg', name: 'ibs' },
+                    { id: 92, src: 'booktwo/93.jpg', name: 'ibs' },
+                    { id: 93, src: 'booktwo/94.jpg', name: 'ibs' },
+                    { id: 94, src: 'booktwo/95.jpg', name: 'ibs' },
+					{ id: 95, src: 'booktwo/96.jpg', name: 'ibs' },
+					{ id: 96, src: 'booktwo/97.jpg', name: 'ibs' },
+                    { id: 97, src: 'booktwo/98.jpg', name: 'ibs' },
+                    { id: 98, src: 'booktwo/99.jpg', name: 'ibs' },
+                    { id: 99, src: 'booktwo/100.jpg', name: 'ibs' },
+					{ id: 100, src: 'booktwo/101.jpg', name: 'ibs' },
+					{ id: 101, src: 'booktwo/102.jpg', name: 'ibs' },
+                    { id: 102, src: 'booktwo/103.jpg', name: 'ibs' },
+                    { id: 103, src: 'booktwo/104.jpg', name: 'ibs' },
+                    { id: 104, src: 'booktwo/105.jpg', name: 'ibs' },
+					{ id: 105, src: 'booktwo/106.jpg', name: 'ibs' },
+					{ id: 106, src: 'booktwo/107.jpg', name: 'ibs' },
+                    { id: 107, src: 'booktwo/108.jpg', name: 'ibs' },
+                    { id: 108, src: 'booktwo/109.jpg', name: 'ibs' },
+                    { id: 109, src: 'booktwo/110.jpg', name: 'ibs' },
+					{ id: 110, src: 'booktwo/111.jpg', name: 'ibs' },
+                    { id: 111, src: 'booktwo/112.jpg', name: 'ibs' },
+					{ id: 112, src: 'booktwo/113.jpg', name: 'ibs' }
+					
+                ];
+                
+                this.currentLeftPage = 1; // 当前左页页码
+                this.currentRightPage = 2; // 当前右页页码
+                this.totalPages = this.images.length; // 总页数
+                this.isTurning = false; // 是否正在翻页
+                this.flipPageElement = null; // 动态创建的翻页元素
+                this.flipDirection = null; // 翻页方向：'forward' 或 'backward'
+                this.isCoverOpened = false; // 封面是否已打开
+                this.isAnimating = false; // 是否正在执行封面动画
+                
+                this.initializeElements();
+                this.bindEvents();
+                
+                // 监听窗口大小变化，调整布局
+                window.addEventListener('resize', () => this.adjustLayout());
+            }
+            
+            initializeElements() {
+                // 获取DOM元素
+                this.elements = {
+                    coverContainer: document.getElementById('coverContainer'),
+                    coverBook: document.getElementById('coverBook'),
+                    coverImage: document.getElementById('coverImage'),
+                    coverTitle: document.getElementById('coverTitle'),
+                    totalPageCount: document.getElementById('totalPageCount'),
+                    readerContainer: document.getElementById('readerContainer'),
+                    prevBtn: document.getElementById('prevBtn'),
+                    nextBtn: document.getElementById('nextBtn'),
+                    pageInput: document.getElementById('pageInput'),
+                    totalPages: document.getElementById('totalPages'),
+                    backToCoverBtn: document.getElementById('backToCoverBtn'),
+                    flipbookRealContainer: document.getElementById('flipbookRealContainer'),
+                    flipbookReal: document.getElementById('flipbookReal'),
+                    leftPageReal: document.getElementById('leftPageReal'),
+                    rightPageReal: document.getElementById('rightPageReal'),
+                    leftImageReal: document.getElementById('leftImageReal'),
+                    rightImageReal: document.getElementById('rightImageReal'),
+                    leftPageNumReal: document.getElementById('leftPageNumReal'),
+                    rightPageNumReal: document.getElementById('rightPageNumReal'),
+                    flipLeftReal: document.getElementById('flipLeftReal'),
+                    flipRightReal: document.getElementById('flipRightReal'),
+                    loadingOverlay: document.getElementById('loadingOverlay'),
+                    loadingText: document.getElementById('loadingText'),
+                    errorMessage: document.getElementById('errorMessage'),
+                    statusMessage: document.getElementById('statusMessage')
+                };
+                
+                // 更新总页数显示
+                this.elements.totalPageCount.textContent = this.totalPages;
+                this.elements.totalPages.textContent = `/ ${this.totalPages}`;
+                this.elements.pageInput.max = this.totalPages;
+                
+                // 初始调整布局
+                this.adjustLayout();
+                
+                // 初始化页码样式
+                this.updatePageNumberStyle();
+            }
+            
+            adjustLayout() {
+                // 根据屏幕尺寸调整布局
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                
+                // 调整封面大小
+                if (screenWidth < 768) {
+                    // 小屏幕：封面占据更大比例
+                    this.elements.coverBook.style.width = '90vw';
+                    this.elements.coverBook.style.height = '85vh';
+                } else if (screenWidth < 1200) {
+                    // 中等屏幕
+                    this.elements.coverBook.style.width = '70vw';
+                    this.elements.coverBook.style.height = '80vh';
+                } else {
+                    // 大屏幕
+                    this.elements.coverBook.style.width = '60vw';
+                    this.elements.coverBook.style.height = '75vh';
+                }
+                
+                // 调整阅读器大小
+                if (this.elements.readerContainer.style.display === 'flex') {
+                    const readerWrapper = this.elements.readerContainer.querySelector('.reader-wrapper');
+                    if (readerWrapper) {
+                        if (screenWidth < 768) {
+                            readerWrapper.style.width = '180vw';
+                            readerWrapper.style.height = '85vh';
+                        } else if (screenWidth < 1200) {
+                            readerWrapper.style.width = '140vw';
+                            readerWrapper.style.height = '80vh';
+                        } else {
+                            readerWrapper.style.width = '120vw';
+                            readerWrapper.style.height = '75vh';
+                        }
+                    }
+                }
+            }
+            
+            // 更新页码样式：单数靠左，双数靠右
+            updatePageNumberStyle() {
+                // 更新左侧页面页码
+                const leftPageNum = parseInt(this.elements.leftPageNumReal.textContent);
+                if (leftPageNum) {
+                    this.elements.leftPageNumReal.className = 'page-number-real';
+                    this.elements.leftPageNumReal.classList.add(leftPageNum % 2 === 1 ? 'odd' : 'even');
+                }
+                
+                // 更新右侧页面页码
+                const rightPageNum = parseInt(this.elements.rightPageNumReal.textContent);
+                if (rightPageNum) {
+                    this.elements.rightPageNumReal.className = 'page-number-real';
+                    this.elements.rightPageNumReal.classList.add(rightPageNum % 2 === 1 ? 'odd' : 'even');
+                }
+            }
+            
+            bindEvents() {
+                // 绑定封面点击事件
+                this.elements.coverBook.addEventListener('click', () => this.openCover());
+                
+                // 绑定返回封面按钮事件
+                this.elements.backToCoverBtn.addEventListener('click', () => this.closeMagazine());
+                
+                // 绑定翻页控制事件
+                this.elements.prevBtn.addEventListener('click', () => this.flipPage('backward'));
+                this.elements.nextBtn.addEventListener('click', () => this.flipPage('forward'));
+                this.elements.pageInput.addEventListener('change', () => this.goToPage());
+                
+                this.elements.flipLeftReal.addEventListener('click', () => this.flipPage('backward'));
+                this.elements.flipRightReal.addEventListener('click', () => this.flipPage('forward'));
+                
+                // 添加键盘快捷键
+                document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+                
+                // 为图片添加错误处理
+                this.addImageErrorHandlers();
+            }
+            
+            addImageErrorHandlers() {
+                // 为所有图片添加错误处理
+                const images = document.querySelectorAll('img');
+                images.forEach(img => {
+                    img.onerror = () => {
+                        this.setPlaceholderImage(img, 'THE END');
+                    };
+                });
+            }
+            
+            setPlaceholderImage(imgElement, text) {
+                // 创建木色调占位图片
+                const canvas = document.createElement('canvas');
+                canvas.width = 800;
+                canvas.height = 600;
+                const ctx = canvas.getContext('2d');
+                
+                // 背景颜色 - 木色调
+                ctx.fillStyle = '#f5e7d3';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 添加木纹纹理
+                ctx.fillStyle = '#e8d9c5';
+                for (let i = 0; i < 50; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    const width = 5 + Math.random() * 20;
+                    const height = 2 + Math.random() * 5;
+                    ctx.fillRect(x, y, width, height);
+                }
+                
+                // 文字
+                ctx.fillStyle = '#8b5a2b';
+                ctx.font = 'bold 30px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(text, canvas.width/2, canvas.height/2);
+                
+                // 设置占位图
+                imgElement.src = canvas.toDataURL('image/png');
+            }
+            
+            openCover() {
+                if (this.isCoverOpened || this.isAnimating) return;
+                
+                this.isCoverOpened = true;
+                this.isAnimating = true;
+                
+                // 触发重绘
+                void this.elements.coverBook.offsetWidth;
+                
+                // 添加向下移动放大虚化消失动画类
+                this.elements.coverBook.classList.add('zooming');
+                
+                // 等待动画完成
+                setTimeout(() => {
+                    this.elements.coverContainer.style.display = 'none';
+                    this.showMagazine();
+                    this.isAnimating = false;
+                }, 1600);
+            }
+            
+            closeMagazine() {
+                if (this.isAnimating) return;
+                
+                this.isAnimating = true;
+                
+                // 先显示封面容器
+                this.elements.coverContainer.style.display = 'flex';
+                
+                // 重置封面状态
+                this.resetCoverState();
+                
+                // 隐藏阅读器
+                this.elements.readerContainer.style.display = 'none';
+                
+                // 重置封面状态
+                this.isCoverOpened = false;
+                
+                // 等待动画重置完成
+                setTimeout(() => {
+                    this.isAnimating = false;
+                }, 100);
+            }
+            
+            resetCoverState() {
+                // 重置封面为原始状态
+                this.elements.coverBook.style.visibility = 'visible';
+                this.elements.coverBook.style.opacity = '1';
+                this.elements.coverBook.style.filter = 'blur(0px)';
+                this.elements.coverBook.style.transform = 'scale(1) translateY(0)';
+                this.elements.coverBook.style.transition = 'all 1.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                
+                // 移除所有动画类
+                this.elements.coverBook.classList.remove('zooming');
+            }
+            
+            showMagazine() {
+                // 显示阅读器
+                this.elements.readerContainer.style.display = 'flex';
+                
+                // 调整阅读器大小
+                this.adjustLayout();
+                
+                // 更新按钮状态
+                this.updateNavigationButtons();
+            }
+            
+            updateNavigationButtons() {
+                this.elements.prevBtn.disabled = this.currentLeftPage <= 1;
+                this.elements.nextBtn.disabled = this.currentRightPage >= this.totalPages;
+            }
+            
+            flipPage(direction) {
+                if (this.isTurning) return;
+                
+                if (direction === 'forward' && this.currentRightPage >= this.totalPages) return;
+                if (direction === 'backward' && this.currentLeftPage <= 1) return;
+                
+                this.isTurning = true;
+                this.flipDirection = direction;
+                
+                if (direction === 'forward') {
+                    this.turnPageForward();
+                } else {
+                    this.turnPageBackward();
+                }
+            }
+            
+            turnPageForward() {
+                // 创建翻页元素
+                this.createFlipPageElement();
+                
+                const nextRightPage = this.currentRightPage + 1; // 即将显示的右页（第3页）
+                
+                // 1. 设置翻页元素的正面为当前右页（第2页）
+                const frontImg = this.flipPageElement.querySelector('.front img');
+                if (this.currentRightPage <= this.images.length) {
+                    frontImg.src = this.images[this.currentRightPage - 1].src;
+                }
+                
+                // 设置翻页元素正面的页码
+                const frontPageNum = this.flipPageElement.querySelector('.front .page-number-real');
+                if (frontPageNum) {
+                    frontPageNum.textContent = this.currentRightPage;
+                    // 根据单双数设置页码位置
+                    frontPageNum.className = 'page-number-real';
+                    frontPageNum.classList.add(this.currentRightPage % 2 === 1 ? 'odd' : 'even');
+                }
+                
+                // 2. 设置翻页元素的背面为下一页的右页（第3页）
+                const backDiv = this.flipPageElement.querySelector('.back');
+                if (nextRightPage <= this.images.length) {
+                    const backImg = document.createElement('img');
+                    backImg.className = 'page-image-real';
+                    backImg.src = this.images[nextRightPage - 1].src;
+                    
+                    const backPageNum = document.createElement('div');
+                    backPageNum.className = 'page-number-real';
+                    backPageNum.textContent = nextRightPage;
+                    // 根据单双数设置页码位置
+                    backPageNum.classList.add(nextRightPage % 2 === 1 ? 'odd' : 'even');
+                    
+                    backDiv.innerHTML = '';
+                    backDiv.appendChild(backImg);
+                    backDiv.appendChild(backPageNum);
+                } else {
+                    // 如果是最后一页之后，显示THE END
+                    const backImg = document.createElement('img');
+                    backImg.className = 'page-image-real';
+                    this.setPlaceholderImage(backImg, 'THE END');
+                    
+                    const backPageNum = document.createElement('div');
+                    backPageNum.className = 'page-number-real';
+                    backPageNum.textContent = nextRightPage;
+                    // 根据单双数设置页码位置
+                    backPageNum.classList.add(nextRightPage % 2 === 1 ? 'odd' : 'even');
+                    
+                    backDiv.innerHTML = '';
+                    backDiv.appendChild(backImg);
+                    backDiv.appendChild(backPageNum);
+                }
+                
+                // 3. 更新底层右侧页面为即将显示的右页（第4页）
+                const newRightPage = this.currentRightPage + 2;
+                if (newRightPage <= this.images.length) {
+                    this.elements.rightImageReal.src = this.images[newRightPage - 1].src;
+                    this.elements.rightPageNumReal.textContent = newRightPage;
+                } else {
+                    // 如果是最后一页之后，显示THE END
+                    this.setPlaceholderImage(this.elements.rightImageReal, 'THE END');
+                    this.elements.rightPageNumReal.textContent = newRightPage;
+                }
+                
+                // 4. 开始翻页动画
+                setTimeout(() => {
+                    this.flipPageElement.classList.add('flipping');
+                    
+                    // 等待动画完成后再更新其他页面内容
+                    setTimeout(() => {
+                        // 更新左侧页面
+                        this.currentLeftPage += 2;
+                        if (this.currentLeftPage <= this.images.length) {
+                            this.elements.leftImageReal.src = this.images[this.currentLeftPage - 1].src;
+                            this.elements.leftPageNumReal.textContent = this.currentLeftPage;
+                        } else {
+                            // 如果是最后一页之后，显示THE END
+                            this.setPlaceholderImage(this.elements.leftImageReal, 'THE END');
+                            this.elements.leftPageNumReal.textContent = this.currentLeftPage;
+                        }
+                        
+                        // 更新右页页码
+                        this.currentRightPage = newRightPage;
+                        
+                        // 更新页码显示
+                        this.elements.pageInput.value = this.currentLeftPage;
+                        
+                        // 更新按钮状态
+                        this.updateNavigationButtons();
+                        
+                        // 更新页码样式
+                        this.updatePageNumberStyle();
+                        
+                        // 清理翻页元素
+                        this.flipPageElement.remove();
+                        this.flipPageElement = null;
+                        this.isTurning = false;
+                        this.flipDirection = null;
+                    }, 800);
+                }, 10);
+            }
+            
+            turnPageBackward() {
+                // 创建翻页元素
+                this.createFlipPageElement();
+                
+                // 1. 设置翻页元素的正面为当前左页（第3页）
+                const frontImg = this.flipPageElement.querySelector('.front img');
+                if (this.currentLeftPage <= this.images.length) {
+                    frontImg.src = this.images[this.currentLeftPage - 2].src;
+                }
+                
+                // 设置翻页元素正面的页码
+                const frontPageNum = this.flipPageElement.querySelector('.front .page-number-real');
+                if (frontPageNum) {
+                    const pageNum = this.currentLeftPage - 1;
+                    frontPageNum.textContent = pageNum;
+                    // 根据单双数设置页码位置
+                    frontPageNum.className = 'page-number-real';
+                    frontPageNum.classList.add(pageNum % 2 === 1 ? 'odd' : 'even');
+                }
+                
+                // 2. 设置翻页元素的背面为上一页的左页（第2页）
+                const prevLeftPage = this.currentLeftPage - 1;
+                const backDiv = this.flipPageElement.querySelector('.back');
+                if (prevLeftPage >= 1 && prevLeftPage <= this.images.length) {
+                    const backImg = document.createElement('img');
+                    backImg.className = 'page-image-real';
+                    backImg.src = this.images[prevLeftPage].src;
+                    
+                    const backPageNum = document.createElement('div');
+                    backPageNum.className = 'page-number-real';
+                    backPageNum.textContent = prevLeftPage;
+                    // 根据单双数设置页码位置
+                    backPageNum.classList.add(prevLeftPage % 2 === 1 ? 'odd' : 'even');
+                    
+                    backDiv.innerHTML = '';
+                    backDiv.appendChild(backImg);
+                    backDiv.appendChild(backPageNum);
+                } else {
+                    const backPageNum = document.createElement('div');
+                    backPageNum.className = 'page-number-real';
+                    backPageNum.textContent = prevLeftPage;
+                    // 根据单双数设置页码位置
+                    backPageNum.classList.add(prevLeftPage % 2 === 1 ? 'odd' : 'even');
+                    backDiv.innerHTML = '';
+                    backDiv.appendChild(backPageNum);
+                }
+                
+                // 3. 先将翻页元素翻到背面位置
+                this.flipPageElement.style.transform = 'rotateY(-180deg)';
+                this.flipPageElement.style.transition = 'none';
+                
+                // 4. 更新底层左侧页面为新的左页（第1页）
+                const newLeftPage = this.currentLeftPage - 2;
+                if (newLeftPage >= 1 && newLeftPage <= this.images.length) {
+                    this.elements.leftImageReal.src = this.images[newLeftPage - 1].src;
+                    this.elements.leftPageNumReal.textContent = newLeftPage;
+                } else {
+                    this.elements.leftImageReal.src = '';
+                    this.elements.leftPageNumReal.textContent = newLeftPage;
+                }
+                
+                // 5. 开始翻回动画
+                setTimeout(() => {
+                    // 重置过渡并开始翻回
+                    this.flipPageElement.style.transition = 'transform 0.8s cubic-bezier(0.42, 0, 0.58, 1)';
+                    this.flipPageElement.style.transform = 'rotateY(0deg)';
+                    this.flipPageElement.classList.add('flipping-back');
+                    
+                    // 等待动画完成后再更新其他页面内容
+                    setTimeout(() => {
+                        // 更新右侧页面
+                        this.currentRightPage = this.currentRightPage - 2;
+                        if (this.currentRightPage <= this.images.length) {
+                            this.elements.rightImageReal.src = this.images[this.currentRightPage - 1].src;
+                            this.elements.rightPageNumReal.textContent = this.currentRightPage;
+                        } else {
+                            this.elements.rightImageReal.src = '';
+                            this.elements.rightPageNumReal.textContent = this.currentRightPage;
+                        }
+                        
+                        // 更新左页页码
+                        this.currentLeftPage = newLeftPage;
+                        
+                        // 更新页码显示
+                        this.elements.pageInput.value = this.currentLeftPage;
+                        
+                        // 更新按钮状态
+                        this.updateNavigationButtons();
+                        
+                        // 更新页码样式
+                        this.updatePageNumberStyle();
+                        
+                        // 清理翻页元素
+                        this.flipPageElement.remove();
+                        this.flipPageElement = null;
+                        this.isTurning = false;
+                        this.flipDirection = null;
+                    }, 800);
+                }, 10);
+            }
+            
+            createFlipPageElement() {
+                // 创建翻页元素
+                this.flipPageElement = document.createElement('div');
+                this.flipPageElement.className = 'flip-page';
+                
+                // 创建正面
+                const frontDiv = document.createElement('div');
+                frontDiv.className = 'front';
+                
+                const frontImg = document.createElement('img');
+                frontImg.className = 'page-image-real';
+                
+                const frontPageNum = document.createElement('div');
+                frontPageNum.className = 'page-number-real';
+                
+                frontDiv.appendChild(frontImg);
+                frontDiv.appendChild(frontPageNum);
+                
+                // 创建背面
+                const backDiv = document.createElement('div');
+                backDiv.className = 'back';
+                
+                this.flipPageElement.appendChild(frontDiv);
+                this.flipPageElement.appendChild(backDiv);
+                
+                // 添加到翻书容器
+                this.elements.flipbookReal.appendChild(this.flipPageElement);
+            }
+            
+            goToPage() {
+                const pageNum = parseInt(this.elements.pageInput.value);
+                if (pageNum >= 1 && pageNum <= this.totalPages) {
+                    // 确保左页是奇数
+                    const targetLeftPage = pageNum % 2 === 0 ? pageNum - 1 : pageNum;
+                    const targetRightPage = targetLeftPage + 1;
+                    
+                    this.currentLeftPage = targetLeftPage;
+                    this.currentRightPage = targetRightPage;
+                    
+                    // 更新页面显示
+                    if (this.currentLeftPage <= this.images.length) {
+                        this.elements.leftImageReal.src = this.images[this.currentLeftPage - 1].src;
+                        this.elements.leftPageNumReal.textContent = this.currentLeftPage;
+                    } else {
+                        this.elements.leftImageReal.src = '';
+                        this.elements.leftPageNumReal.textContent = '';
+                    }
+                    
+                    if (this.currentRightPage <= this.images.length) {
+                        this.elements.rightImageReal.src = this.images[this.currentRightPage - 1].src;
+                        this.elements.rightPageNumReal.textContent = this.currentRightPage;
+                    } else {
+                        this.elements.rightImageReal.src = '';
+                        this.elements.rightPageNumReal.textContent = '';
+                    }
+                    
+                    // 更新按钮状态
+                    this.updateNavigationButtons();
+                    
+                    // 更新页码样式
+                    this.updatePageNumberStyle();
+                } else {
+                    this.elements.pageInput.value = this.currentLeftPage;
+                }
+            }
+            
+            handleKeyboard(event) {
+                if (this.isTurning) return;
+                
+                switch (event.key) {
+                    case 'ArrowLeft':
+                    case 'PageUp':
+                        event.preventDefault();
+                        this.flipPage('backward');
+                        break;
+                    case 'ArrowRight':
+                    case 'PageDown':
+                    case ' ':
+                        event.preventDefault();
+                        this.flipPage('forward');
+                        break;
+                    case 'Escape':
+                        event.preventDefault();
+                        this.closeMagazine();
+                        break;
+                }
+            }
+            
+            showLoading(message) {
+                this.elements.loadingText.textContent = message;
+                this.elements.loadingOverlay.classList.add('active');
+            }
+            
+            hideLoading() {
+                this.elements.loadingOverlay.classList.remove('active');
+            }
+            
+            showStatus(message, type = 'info') {
+                const statusElement = this.elements.statusMessage;
+                statusElement.textContent = message;
+                statusElement.className = 'status-message';
+                statusElement.classList.add('show', type);
+                
+                // 3秒后自动隐藏
+                setTimeout(() => {
+                    statusElement.classList.remove('show');
+                }, 3000);
+            }
+            
+            showError(message) {
+                this.elements.errorMessage.textContent = message;
+                this.elements.errorMessage.classList.add('show');
+                
+                setTimeout(() => {
+                    this.elements.errorMessage.classList.remove('show');
+                }, 5000);
+            }
+        }
+        
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', () => {
+            window.magazineApp = new AdaptiveWoodStyleImageMagazineGenerator();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBS  Construction Decoration Ltd., - About</title>
+    <style>
+        /* Keep original styles for consistent layout */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', 'Arial', sans-serif; }
+        body { color: #333; background-color: #f8f9fa; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+        ul { list-style: none; }
+        .container { width: 90%; max-width: 1400px; margin: 0 auto; }
+        img, video { max-width: 100%; height: auto; display: block; }
+        button { cursor: pointer; border: none; background: transparent; transition: all 0.3s ease; }
+
+        .header { background-color: #ffffff; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 999; }
+        .header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .logo { width: 170px; }
+        .nav-list { display: flex; gap: 3rem; font-size: 1rem; font-weight: 500; }
+        .nav-list li a:hover { color: #EC6C00; }
+        .lang-switch { display: flex; gap: 1rem; font-size: 0.9rem; }
+        .lang-switch a { padding: 0.5rem 1rem; border: 1px solid #e0e0e0; border-radius: 4px; }
+        .lang-switch a.active { background-color: #EC6C00; color: #fff; border-color: #EC6C00; }
+
+        .fade-in-top, .fade-in-bottom, .fade-in-left, .fade-in-right { opacity: 1; transform: none; }
+
+        .about-banner { width: 100%; height: 400px; }
+        .about-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+        .breadcrumb { padding: 2rem 0; background-color: #ffffff; font-size: 0.95rem; color: #666; }
+        .breadcrumb a { color: #EC6C00; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb span { margin: 0 0.5rem; color: #999; }
+
+        .about-jinjun { padding: 6rem 0; background-color: #ffffff; }
+        .section-title { font-size: 2.2rem; color: #EC6C00; margin-bottom: 3rem; text-align: center; font-weight: 600; }
+        .about-content { font-size: 1.05rem; line-height: 2; color: #444; text-align: justify; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+
+        .key-project { padding: 6rem 0; background-color: #f8f9fa; }
+        .key-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2rem; align-items: center; }
+        .key-item { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .key-icon { width: 100px; height: 100px; margin-bottom: 1.5rem; transition: transform 0.3s ease-in-out; border-radius: 8px; overflow: hidden; }
+        .key-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .key-item:hover .key-icon { transform: scale(1.1); }
+        .key-text { font-size: 1.2rem; color: #222; font-weight: 500; }
+
+        .chief-designer { padding: 6rem 0; background-color: #ffffff; }
+        .designer-wrap { display: flex; gap: 4rem; align-items: center; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
+        .designer-img { flex: 1; max-width: 350px; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .designer-img img { width: 100%; height: 100%; object-fit: cover; }
+        .designer-text { flex: 1; min-width: 350px; font-size: 1.05rem; line-height: 2; color: #444; text-align: justify; }
+
+        .global-project { padding: 6rem 0; background-color: #f8f9fa; }
+        .global-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .global-item { position: relative; height: 300px; border-radius: 8px; overflow: hidden; transition: transform 0.3s ease-in-out; }
+        .global-item:hover { transform: scale(1.03); }
+        .global-bg { width: 100%; height: 100%; }
+        .global-text { color: #333333; text-align:center; display: flex; justify-content: center; align-items: center; font-size: 1rem; font-weight: 500; line-height: 1.4; min-height: 50px; height: auto; padding: 10px 12px; overflow-wrap: anywhere; }
+
+        @media (max-width: 768px) {
+            .header .container { flex-direction: column; gap: 1rem; }
+            .nav-list { gap: 1.5rem; }
+            .about-banner { height: 280px; }
+            .section-title { font-size: 1.8rem; margin-bottom: 2rem; }
+            .about-jinjun, .key-project, .chief-designer, .global-project { padding: 4rem 0; }
+            .about-content { font-size: 0.95rem; line-height: 1.8; }
+            .key-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+            .key-icon { width: 80px; height: 80px; }
+            .designer-wrap { gap: 3rem; }
+            .designer-text { font-size: 0.95rem; line-height: 1.8; }
+            .global-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+            .global-item { height: 250px; }
+        }
+        @media (max-width: 480px) {
+            .about-banner { height: 200px; }
+            .breadcrumb { padding: 1.5rem 0; font-size: 0.85rem; }
+            .section-title { font-size: 1.5rem; }
+            .about-jinjun, .key-project, .chief-designer, .global-project { padding: 2rem 0; }
+            .about-content { font-size: 0.9rem; }
+            .key-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .designer-img, .designer-text { min-width: 100%; }
+            .designer-text { font-size: 0.9rem; }
+            .global-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .global-item { height: 200px; }
+            .social-icons { gap: 1rem; }
+            .footer-nav { gap: 1.5rem; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+<!-- Header (EN) -->
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="../images/logo1.png" alt="IBS  Construction Decoration Ltd.,">
+        </a>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="index.html#achievements">Achievements</a></li>
+                <li><a href="index.html#star-project">Celebrity Project</a></li>
+                <li><a href="index.html#future">Look Ahead</a></li>
+            </ul>
+        </nav>
+        <div class="lang-switch">
+            <a href="../about.html">中文</a>
+            <a href="#" class="active" onclick="return false;">EN</a>
+        </div>
+    </div>
+</header>
+
+    <section class="about-banner">
+        <img src="../images/aboutbanner.jpg" alt="About Banner">
+    </section>
+
+    <section class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a>
+            <span>></span>
+            <span>About us</span>
+        </div>
+    </section>
+
+    <section class="about-jinjun">
+        <div class="container">
+            <h2 class="section-title">About Us</h2>
+            <div class="about-content">
+                Founded in 2005, IBS  Construction Decoration Ltd., has devoted two decades to delivering professional design, construction, project management, and integrated soft furnishing & furniture solutions for Fortune Global 500 multinational companies and luxury residences.
+                <br><br>
+                Over the past twenty years, we have completed a wide range of successful projects, including large-scale comprehensive planning, traditional Chinese architectural complexes, five-star hotels, boutique restaurants and hospitality venues, factories, laboratories, office buildings, and high-end historical villas (see the company brochure on this website). Meanwhile, our team has systematically summarized practical methods and step-by-step procedures across construction and project management, forming a standardized set of “Engineering Construction & Project Management Regulations” (see the relevant section on this website). We also recognize that the world is vast and that every country contributes unique perspectives. To strengthen our capabilities in advanced technology and R&D, we actively carry out cross-region, cross-domain, and cross-industry collaboration projects (see the EG section on this website).
+                <br><br>
+                Through persistent effort and extensive discussions over approximately five years, we successfully secured an international tender project from the Government of California, competing against around 400 construction companies worldwide: an integrated turnkey project for the overall planning, design, construction, and construction management of 500 townhouses in Pioneer Town, California. Winning this project marks IBS Construction Decoration LTD.’s successful transformation from a domestic construction service provider into a global construction service provider.
+                <br><br>
+                The road ahead is long. Looking back on two decades of dedication, every member of our team will continue to strive forward—toward a brighter and greater future—creating new achievements and building an even more remarkable legacy. Our goal is to become a world-class construction service provider and a leading team in the construction engineering field that integrates the best of Eastern and Western strengths.
+            </div>
+        </div>
+    </section>
+
+    <section class="key-project">
+        <div class="container">
+            <h2 class="section-title">Turnkey Services</h2>
+            <div class="key-grid">
+                <div class="key-item">
+                    <div class="key-icon"><img src="../images/abouticon1.jpg" alt="Planning & Design"></div>
+                    <div class="key-text">Planning & Design<br /><br /></div>
+                </div>
+                <div class="key-item">
+                    <div class="key-icon"><img src="../images/abouticon2.jpg" alt="Construction"></div>
+                    <div class="key-text">Construction<br /><br /></div>
+                </div>
+                <div class="key-item">
+                    <div class="key-icon"><img src="../images/abouticon3.jpg" alt="Project Management"></div>
+                    <div class="key-text">Project Management<br /><br /></div>
+                </div>
+                <div class="key-item">
+                    <div class="key-icon"><img src="../images/abouticon4.jpg" alt="Soft Furnishing"></div>
+                    <div class="key-text">Soft Furnishing<br /><br /></div>
+                </div>
+                <div class="key-item">
+                    <div class="key-icon"><img src="../images/abouticon5.jpg" alt="Furniture & Equipment Installation"></div>
+                    <div class="key-text">Installation<br /><span>Auxiliary Works</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="chief-designer">
+        <div class="container">
+            <h2 class="section-title">Leadership</h2>
+            <div class="designer-wrap">
+                <div class="designer-img">
+                    <img src="../images/aboutsjs.jpg" alt="Leadership">
+                </div>
+                <div class="designer-text">
+                    As the founder of IBS  Construction Decoration Ltd., Rudong Dai has spent more than twenty years dedicated to high-end spatial creation. With deep professional expertise and forward-looking industry insight, she focuses on providing Fortune Global 500 multinational companies and premium villas with integrated turnkey services—from space planning and design, refined construction execution, and full-cycle project management, to soft furnishing and bespoke furniture solutions.<br/>
+                    Always centered on client needs, she has built an end-to-end service loop that connects “design concept — on-site delivery — quality control — soft furnishing enhancement”. Whether it is the planning of large-scale projects, the construction delivery of public facilities, efficient office spaces for corporate headquarters, or factories and laboratories, her team consistently aligns functional requirements with aesthetic goals.<br/>
+                    Leveraging hands-on experience from hundreds of benchmark projects over two decades, she has led the team to distill a standardized, end-to-end methodology for construction execution and project management. By breaking down and consolidating practical essentials across key stages—from early-stage design development, mid-stage process control, to final inspection and handover—she spearheaded the creation of the company’s proprietary “Engineering Construction & Project Management Regulations”, laying a solid foundation for consistent quality delivery (see the project management regulations section on this website).<br/>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="global-project">
+        <div class="container">
+            <h2 class="section-title">Global Construction</h2>
+            <div class="global-grid">
+                <div class="global-item">
+                    <div><img src="../images/aboutsd1.jpg" alt="Systematic Management" class="global-bg"></div>
+                    <div class="global-text">Systematic Management</div>
+                </div>
+                <div class="global-item">
+                    <div><img src="../images/aboutsd2.jpg" alt="Integrated Services" class="global-bg"></div>
+                    <div class="global-text">Integrated Services</div>
+                </div>
+                <div class="global-item">
+                    <div><img src="../images/aboutsd3.jpg" alt="Multinational Clients" class="global-bg"></div>
+                    <div class="global-text">Multinational Clients</div>
+                </div>
+                <div class="global-item">
+                    <div><img src="../images/aboutsd4.jpg" alt="Turnkey Delivery" class="global-bg"></div>
+                    <div class="global-text">Turnkey Delivery</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+	/* 底部区域 - 与前四页完全一致，保证网站统一性 */
+        .footer {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 1.5rem 0 1rem;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .social-icons a {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+        .social-icons a:hover {
+            color: #EC6C00;
+        }
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+			font-weight: 600;
+        }
+        .footer-nav a {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .footer-nav a:hover {
+            color: #fff;
+        }
+        .copyright {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #999;
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+        }
+</style>
+	
+	
+
+
+<!-- Footer (EN) -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About us</a>
+            <a href="news.html">News</a>
+            <a href="contact.html">Contact</a>
+            <a href="notice.html">Legal</a>
+        </div>
+        <div class="social-icons">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="copyright">
+            Copyright © 2025 <span>IBS  Construction Decoration Ltd.,</span>
+            <a style="color:#999; text-decoration:none;" href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2021012540号-1</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
